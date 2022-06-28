@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "org.acme";
+option java_outer_classname = "SkuGrpcProto";
+
+package sku;
+
+//A service for retrieving Sku information
+//TODO: rename, cant have same name as package and SkuService is redundant
+service SkuGrpc {
+  //This is a comment
+  rpc GetSkus (PagingRequest) returns (SkuResult);
+  //rpc GetFilteredSkus (SkuFilterRequest) returns (SkuResult);
+  //rpc CreateSku (SkuCreateRequest) returns (MessageResult);
+}
+
+//A request for selecting a filtered sku set
+message SkuFilterRequest{
+  string Category = 1;
+  PagingRequest Paging = 2;
+}
+
+message SkuCreateRequest{
+  Sku Sku = 1;
+}
+
+//A pagination request
+message PagingRequest{
+  int32 PageSize = 1;
+  int32 PageNumber = 2;
+}
+
+//A result with a paged list of Skus
+message SkuResult{
+  repeated Sku Skus = 1;
+  PagingResult Paging = 2;
+}
+
+//A Sku
+message Sku{
+  string SkuId = 1;
+  string Name = 2;
+  string Category = 3;
+}
+
+//A result for pagination
+message PagingResult{
+  int32 PageSize = 1;
+  int32 PageNumber = 2;
+  int32 TotalItemCount = 3;
+}
+
+message MessageResult{
+  string message = 1;
+}
